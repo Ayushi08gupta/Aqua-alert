@@ -3,7 +3,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { useLanguage } from "@/contexts/language-context"
 import { AlertTriangle, CheckCircle, Clock, TrendingUp } from "lucide-react"
+import { useState, useEffect } from "react"
 
 interface HazardReport {
   id: string
@@ -18,10 +20,24 @@ interface HazardStatsProps {
 }
 
 export function HazardStats({ reports }: HazardStatsProps) {
-  // Calculate statistics
+  const { t } = useLanguage();
+  const [verifications, setVerifications] = useState<Record<string, any>>({})
+  
+  useEffect(() => {
+    const loadVerifications = () => {
+      const stored = JSON.parse(localStorage.getItem('reportVerifications') || '{}')
+      setVerifications(stored)
+    }
+    
+    loadVerifications()
+    const interval = setInterval(loadVerifications, 1000)
+    return () => clearInterval(interval)
+  }, [])
+  
+  // Calculate statistics with verification status
   const totalReports = reports.length
-  const pendingReports = reports.filter((r) => r.status === "pending").length
-  const verifiedReports = reports.filter((r) => r.status === "verified").length
+  const verifiedCount = Object.values(verifications).filter(v => v.status === 'verified').length
+  const pendingCount = reports.length - Object.keys(verifications).length
   const criticalReports = reports.filter((r) => r.severity === "critical").length
 
   // Hazard type distribution
@@ -50,7 +66,7 @@ export function HazardStats({ reports }: HazardStatsProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Total Reports</p>
+                <p className="text-sm text-muted-foreground">{t('stats.total')}</p>
                 <p className="text-2xl font-bold text-foreground">{totalReports}</p>
               </div>
               <TrendingUp className="h-8 w-8 text-primary" />
@@ -62,7 +78,7 @@ export function HazardStats({ reports }: HazardStatsProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">This Week</p>
+                <p className="text-sm text-muted-foreground">{t('stats.thisweek')}</p>
                 <p className="text-2xl font-bold text-foreground">{recentReports}</p>
               </div>
               <Clock className="h-8 w-8 text-accent" />
@@ -74,7 +90,7 @@ export function HazardStats({ reports }: HazardStatsProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Critical</p>
+                <p className="text-sm text-muted-foreground">{t('stats.critical')}</p>
                 <p className="text-2xl font-bold text-destructive">{criticalReports}</p>
               </div>
               <AlertTriangle className="h-8 w-8 text-destructive" />
@@ -86,8 +102,8 @@ export function HazardStats({ reports }: HazardStatsProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Verified</p>
-                <p className="text-2xl font-bold text-green-600">{verifiedReports}</p>
+                <p className="text-sm text-muted-foreground">{t('stats.verified')}</p>
+                <p className="text-2xl font-bold text-green-600">{verifiedCount}</p>
               </div>
               <CheckCircle className="h-8 w-8 text-green-600" />
             </div>
@@ -98,27 +114,27 @@ export function HazardStats({ reports }: HazardStatsProps) {
       {/* Status Distribution */}
       <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-lg">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg">Report Status</CardTitle>
+          <CardTitle className="text-lg">{t('stats.status')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="flex justify-between items-center">
-            <span className="text-sm">Pending Review</span>
-            <Badge variant="outline">{pendingReports}</Badge>
+            <span className="text-sm">{t('stats.pending')}</span>
+            <Badge variant="outline">{pendingCount}</Badge>
           </div>
-          <Progress value={(pendingReports / totalReports) * 100} className="h-2" />
+          <Progress value={totalReports > 0 ? (pendingCount / totalReports) * 100 : 0} className="h-2" />
 
           <div className="flex justify-between items-center">
-            <span className="text-sm">Verified</span>
-            <Badge variant="outline">{verifiedReports}</Badge>
+            <span className="text-sm">{t('stats.verified')}</span>
+            <Badge variant="outline">{verifiedCount}</Badge>
           </div>
-          <Progress value={(verifiedReports / totalReports) * 100} className="h-2" />
+          <Progress value={totalReports > 0 ? (verifiedCount / totalReports) * 100 : 0} className="h-2" />
         </CardContent>
       </Card>
 
       {/* Top Hazard Types */}
       <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-lg">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg">Top Hazard Types</CardTitle>
+          <CardTitle className="text-lg">{t('stats.tophazards')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           {topHazards.map(([type, count]) => (
@@ -136,20 +152,20 @@ export function HazardStats({ reports }: HazardStatsProps) {
       {/* Quick Actions */}
       <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-lg">
         <CardHeader className="pb-3">
-          <CardTitle className="text-lg">Quick Actions</CardTitle>
+          <CardTitle className="text-lg">{t('stats.quickactions')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           <button className="w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors">
-            <p className="text-sm font-medium">View Pending Reports</p>
-            <p className="text-xs text-muted-foreground">{pendingReports} awaiting review</p>
+            <p className="text-sm font-medium">{t('stats.viewpending')}</p>
+            <p className="text-xs text-muted-foreground">{pendingCount} {t('stats.awaitingreview')}</p>
           </button>
           <button className="w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors">
-            <p className="text-sm font-medium">Critical Alerts</p>
-            <p className="text-xs text-muted-foreground">{criticalReports} high priority</p>
+            <p className="text-sm font-medium">{t('stats.criticalalerts')}</p>
+            <p className="text-xs text-muted-foreground">{criticalReports} {t('stats.highpriority')}</p>
           </button>
           <button className="w-full text-left p-2 rounded-lg hover:bg-muted/50 transition-colors">
-            <p className="text-sm font-medium">Export Data</p>
-            <p className="text-xs text-muted-foreground">Download reports</p>
+            <p className="text-sm font-medium">{t('stats.exportdata')}</p>
+            <p className="text-xs text-muted-foreground">{t('stats.downloadreports')}</p>
           </button>
         </CardContent>
       </Card>

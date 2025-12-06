@@ -46,7 +46,7 @@ export function HazardTrends({ reports }: HazardTrendsProps) {
   )
 
   const topHazards = Object.entries(hazardTypes)
-    .sort(([, a], [, b]) => b - a)
+    .sort(([, a], [, b]) => (b as number) - (a as number))
     .slice(0, 6)
 
   return (
@@ -87,11 +87,11 @@ export function HazardTrends({ reports }: HazardTrendsProps) {
                   <div className="w-20 bg-muted rounded-full h-1.5 overflow-hidden">
                     <div
                       className="h-full bg-accent transition-all duration-300"
-                      style={{ width: `${(count / reports.length) * 100}%` }}
+                      style={{ width: `${((count as number) / reports.length) * 100}%` }}
                     />
                   </div>
                   <Badge variant="secondary" className="text-xs">
-                    {count}
+                    {count as number}
                   </Badge>
                 </div>
               </div>

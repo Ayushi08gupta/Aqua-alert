@@ -3,8 +3,11 @@ import { createClient } from "@/lib/supabase/server"
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 import { AnalyticsOverview } from "@/components/analytics/analytics-overview"
 import { SocialMediaAnalytics } from "@/components/analytics/social-media-analytics"
+import { SocialAnalyticsEngine } from "@/lib/social-analytics"
 import { HazardTrends } from "@/components/analytics/hazard-trends"
 import { GeographicAnalysis } from "@/components/analytics/geographic-analysis"
+
+export const dynamic = 'force-dynamic'
 
 export default async function AnalyticsPage() {
   const supabase = await createClient()
@@ -24,11 +27,36 @@ export default async function AnalyticsPage() {
   // Fetch analytics data
   const { data: reports } = await supabase.from("hazard_reports").select("*").order("created_at", { ascending: false })
 
-  const { data: socialPosts } = await supabase
-    .from("social_media_posts")
-    .select("*")
-    .order("posted_at", { ascending: false })
-    .limit(100)
+  // Mock social media data with analytics
+  const mockSocialPosts = [
+    {
+      id: '1',
+      text: 'Severe flooding happening right now in Mumbai Marine Drive area. Water rising rapidly!',
+      created_at: new Date().toISOString(),
+      user: { id: '1', username: 'mumbai_news', verified: true, follower_count: 50000 },
+      location: { lat: 18.9220, lon: 72.8347, place_text: 'Mumbai Marine Drive' },
+      language: 'en',
+      platform: 'twitter',
+      attachments: ['flood_image.jpg']
+    },
+    {
+      id: '2', 
+      text: 'High waves and storm surge reported near Chennai coast. Fishermen advised to stay away.',
+      created_at: new Date().toISOString(),
+      user: { id: '2', username: 'chennai_weather', verified: false, follower_count: 1200 },
+      location: { lat: 13.0827, lon: 80.2707, place_text: 'Chennai' },
+      language: 'en',
+      platform: 'twitter', 
+      attachments: []
+    }
+  ]
+
+  // Process posts through analytics engine
+  const analyzedPosts = mockSocialPosts.map(post => ({
+    ...post,
+    analytics: SocialAnalyticsEngine.analyzePost(post),
+    filter: SocialAnalyticsEngine.filterPost(post)
+  }))
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50">
@@ -44,7 +72,7 @@ export default async function AnalyticsPage() {
 
         <div className="space-y-8">
           {/* Overview Section */}
-          <AnalyticsOverview reports={reports || []} socialPosts={socialPosts || []} />
+          <AnalyticsOverview reports={reports || []} socialPosts={analyzedPosts || []} />
 
           {/* Charts and Trends */}
           <div className="grid lg:grid-cols-2 gap-6">
@@ -53,7 +81,7 @@ export default async function AnalyticsPage() {
           </div>
 
           {/* Social Media Analytics */}
-          <SocialMediaAnalytics socialPosts={socialPosts || []} />
+          <SocialMediaAnalytics socialPosts={analyzedPosts} />
         </div>
       </main>
     </div>

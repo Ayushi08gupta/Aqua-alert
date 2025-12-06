@@ -40,7 +40,7 @@ export function GeographicAnalysis({ reports }: GeographicAnalysisProps) {
     {} as Record<string, any>,
   )
 
-  const sortedRegions = Object.entries(regionData).sort(([, a], [, b]) => b.total - a.total)
+  const sortedRegions = Object.entries(regionData).sort(([, a], [, b]) => (b as any).total - (a as any).total)
 
   // Hotspot analysis
   const hotspots = reports
@@ -68,21 +68,21 @@ export function GeographicAnalysis({ reports }: GeographicAnalysisProps) {
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">{region}</span>
                   <div className="flex items-center gap-2">
-                    <Badge variant="outline">{data.total} reports</Badge>
-                    {data.critical > 0 && (
+                    <Badge variant="outline">{(data as any).total} reports</Badge>
+                    {(data as any).critical > 0 && (
                       <Badge variant="destructive" className="text-xs">
-                        {data.critical} critical
+                        {(data as any).critical} critical
                       </Badge>
                     )}
                   </div>
                 </div>
                 <div className="flex gap-1 text-xs text-muted-foreground">
-                  {Object.entries(data.hazardTypes)
+                  {Object.entries((data as any).hazardTypes)
                     .sort(([, a], [, b]) => (b as number) - (a as number))
                     .slice(0, 3)
                     .map(([type, count]) => (
                       <span key={type} className="capitalize">
-                        {type.replace("_", " ")} ({count})
+                        {type.replace("_", " ")} ({count as number})
                       </span>
                     ))
                     .reduce((prev, curr, i) => (i === 0 ? [curr] : [...prev, " • ", curr]), [] as any)}

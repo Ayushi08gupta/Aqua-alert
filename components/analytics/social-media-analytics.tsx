@@ -6,39 +6,48 @@ import { Progress } from "@/components/ui/progress"
 import { MessageSquare, TrendingUp, Hash, Users } from "lucide-react"
 
 interface SocialMediaAnalyticsProps {
-  socialPosts: any[]
+  socialPosts: Array<{
+    id: string
+    text: string
+    analytics: any
+    filter: any
+    user: { username: string, verified: boolean }
+    location: { place_text?: string }
+  }>
 }
 
 export function SocialMediaAnalytics({ socialPosts }: SocialMediaAnalyticsProps) {
+  const approvedPosts = socialPosts.filter(p => p.filter.decision === 'APPROVE')
+  const highUrgency = socialPosts.filter(p => p.analytics.urgency === 'high').length
+  const avgConfidence = socialPosts.reduce((acc, p) => acc + p.analytics.confidence_score, 0) / socialPosts.length
+
   // Platform distribution
   const platformData = socialPosts.reduce(
     (acc, post) => {
-      acc[post.platform] = (acc[post.platform] || 0) + 1
+      acc['twitter'] = (acc['twitter'] || 0) + 1
       return acc
     },
     {} as Record<string, number>,
   )
 
-  // Sentiment analysis
+  // Sentiment analysis from AI analytics
   const sentimentData = socialPosts.reduce(
     (acc, post) => {
-      const score = post.sentiment_score || 0
-      if (score > 0.1) acc.positive++
-      else if (score < -0.1) acc.negative++
-      else acc.neutral++
+      const sentiment = post.analytics.sentiment
+      if (sentiment in acc) {
+        (acc as any)[sentiment]++
+      }
       return acc
     },
     { positive: 0, negative: 0, neutral: 0 },
   )
 
-  // Top keywords
+  // Top keywords from AI analysis
   const keywordCounts = socialPosts.reduce(
     (acc, post) => {
-      if (post.hazard_keywords) {
-        post.hazard_keywords.forEach((keyword: string) => {
-          acc[keyword] = (acc[keyword] || 0) + 1
-        })
-      }
+      post.analytics.mentions_keywords.forEach((keyword: string) => {
+        acc[keyword] = (acc[keyword] || 0) + 1
+      })
       return acc
     },
     {} as Record<string, number>,
@@ -49,13 +58,13 @@ export function SocialMediaAnalytics({ socialPosts }: SocialMediaAnalyticsProps)
     .slice(0, 8)
 
   // Engagement metrics
-  const totalEngagement = socialPosts.reduce((sum, post) => sum + (post.engagement_count || 0), 0)
+  const totalEngagement = socialPosts.reduce((sum, post) => sum + ((post as any).engagement_count || 0), 0)
   const avgEngagement = socialPosts.length > 0 ? totalEngagement / socialPosts.length : 0
 
   // Recent high-engagement posts
   const topPosts = socialPosts
-    .filter((post) => post.engagement_count > 0)
-    .sort((a, b) => (b.engagement_count || 0) - (a.engagement_count || 0))
+    .filter((post) => (post as any).engagement_count > 0)
+    .sort((a, b) => ((b as any).engagement_count || 0) - ((a as any).engagement_count || 0))
     .slice(0, 3)
 
   return (
@@ -68,7 +77,27 @@ export function SocialMediaAnalytics({ socialPosts }: SocialMediaAnalyticsProps)
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* AI Analytics Stats */}
+          <div className="grid grid-cols-4 gap-4 mb-6">
+            <div className="text-center p-3 bg-blue-50 rounded-lg">
+              <div className="text-2xl font-bold text-blue-600">{socialPosts.length}</div>
+              <div className="text-xs text-blue-600">Total Posts</div>
+            </div>
+            <div className="text-center p-3 bg-green-50 rounded-lg">
+              <div className="text-2xl font-bold text-green-600">{approvedPosts.length}</div>
+              <div className="text-xs text-green-600">Approved</div>
+            </div>
+            <div className="text-center p-3 bg-red-50 rounded-lg">
+              <div className="text-2xl font-bold text-red-600">{highUrgency}</div>
+              <div className="text-xs text-red-600">High Urgency</div>
+            </div>
+            <div className="text-center p-3 bg-purple-50 rounded-lg">
+              <div className="text-2xl font-bold text-purple-600">{Math.round(avgConfidence * 100)}%</div>
+              <div className="text-xs text-purple-600">Avg Confidence</div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Platform Distribution */}
             <div>
               <h3 className="font-semibold text-sm mb-3">Platform Distribution</h3>
@@ -147,37 +176,39 @@ export function SocialMediaAnalytics({ socialPosts }: SocialMediaAnalyticsProps)
         </CardContent>
       </Card>
 
-      {/* High Engagement Posts */}
-      {topPosts.length > 0 && (
-        <Card className="border-0 shadow-lg bg-card/80 backdrop-blur-sm">
-          <CardHeader>
-            <CardTitle className="text-lg">High Engagement Posts</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {topPosts.map((post, index) => (
-                <div key={index} className="p-4 bg-muted/30 rounded-lg border">
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="capitalize">
-                        {post.platform}
-                      </Badge>
-                      <Badge variant="secondary">{post.engagement_count} engagements</Badge>
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {new Date(post.posted_at).toLocaleDateString()}
-                    </span>
+      {/* Analyzed Posts */}
+      <Card className="border-0 shadow-lg bg-card/80 backdrop-blur-sm">
+        <CardHeader>
+          <CardTitle className="text-lg">AI-Analyzed Posts</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {socialPosts.map(post => (
+              <div key={post.id} className="p-4 bg-muted/30 rounded-lg border">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline">@{post.user.username}</Badge>
+                    {post.user.verified && <Badge className="bg-blue-100 text-blue-800">Verified</Badge>}
+                    <Badge className={post.filter.decision === 'APPROVE' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                      {post.filter.decision}
+                    </Badge>
                   </div>
-                  <p className="text-sm text-foreground line-clamp-2">{post.content}</p>
-                  {post.author_username && (
-                    <p className="text-xs text-muted-foreground mt-2">@{post.author_username}</p>
-                  )}
+                  <Badge variant="outline" className={`${
+                    post.analytics.urgency === 'high' ? 'text-red-600' :
+                    post.analytics.urgency === 'medium' ? 'text-yellow-600' : 'text-green-600'
+                  }`}>{post.analytics.urgency}</Badge>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+                <p className="text-sm mb-2">{post.text}</p>
+                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  <span>Category: {post.analytics.keyword_category}</span>
+                  <span>Confidence: {Math.round(post.analytics.confidence_score * 100)}%</span>
+                  <span>Sentiment: {post.analytics.sentiment}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

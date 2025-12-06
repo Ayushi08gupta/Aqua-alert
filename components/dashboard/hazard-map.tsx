@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { UserVerification } from "@/components/ui/user-verification"
 import { MapPin, Waves, AlertTriangle, Zap, Droplets } from "lucide-react"
 
 interface HazardReport {
@@ -46,6 +47,7 @@ export function HazardMap({ reports }: HazardMapProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const [selectedReport, setSelectedReport] = useState<HazardReport | null>(null)
   const [mapCenter, setMapCenter] = useState({ lat: 25.7617, lng: -80.1918 }) // Miami default
+  const [verifications, setVerifications] = useState<Record<string, any>>({})
 
   // Simulate interactive map with SVG visualization
   const mapWidth = 800
@@ -74,6 +76,16 @@ export function HazardMap({ reports }: HazardMapProps) {
         },
       )
     }
+
+    // Load verification status
+    const loadVerifications = () => {
+      const stored = JSON.parse(localStorage.getItem('reportVerifications') || '{}')
+      setVerifications(stored)
+    }
+    
+    loadVerifications()
+    const interval = setInterval(loadVerifications, 1000)
+    return () => clearInterval(interval)
   }, [])
 
   return (
@@ -108,32 +120,95 @@ export function HazardMap({ reports }: HazardMapProps) {
             strokeWidth="2"
           />
 
+          {/* Social Media Analytics Hotspots */}
+          <g>
+            <circle cx="200" cy="150" r="25" className="fill-red-500 opacity-15" />
+            <circle cx="200" cy="150" r="15" className="fill-red-500 cursor-pointer" 
+              onClick={() => setSelectedReport({
+                id: 'sm1', title: 'Social Media Alert: Mumbai Flooding', description: 'Multiple Twitter reports of severe flooding in Mumbai area',
+                hazard_type: 'flood', severity: 'high', latitude: 19.0760, longitude: 72.8777,
+                location_name: 'Mumbai (Social Media)', status: 'verified', created_at: new Date().toISOString()
+              } as HazardReport)}
+              stroke="#22c55e" strokeWidth="3" />
+            <text x="200" y="155" textAnchor="middle" className="text-xs fill-white font-bold">📱</text>
+            <text x="220" y="140" className="text-xs fill-green-600 font-bold">✓</text>
+          </g>
+          
+          <g>
+            <circle cx="400" cy="300" r="20" className="fill-orange-500 opacity-15" />
+            <circle cx="400" cy="300" r="12" className="fill-orange-500 cursor-pointer" 
+              onClick={() => setSelectedReport({
+                id: 'sm2', title: 'Social Media Alert: Chennai Storm', description: 'Instagram posts showing high waves and storm conditions',
+                hazard_type: 'storm', severity: 'medium', latitude: 13.0827, longitude: 80.2707,
+                location_name: 'Chennai (Social Media)', status: 'pending', created_at: new Date().toISOString()
+              } as HazardReport)}
+              stroke="#eab308" strokeWidth="3" />
+            <text x="400" y="305" textAnchor="middle" className="text-xs fill-white font-bold">📱</text>
+            <text x="418" y="290" className="text-xs fill-yellow-600 font-bold">⏳</text>
+          </g>
+          
+          <g>
+            <circle cx="300" cy="400" r="22" className="fill-red-500 opacity-15" />
+            <circle cx="300" cy="400" r="13" className="fill-red-500 cursor-pointer" 
+              onClick={() => setSelectedReport({
+                id: 'sm3', title: 'Social Media Alert: Goa Tsunami Warning', description: 'Official accounts posting tsunami evacuation alerts',
+                hazard_type: 'tsunami', severity: 'critical', latitude: 15.2993, longitude: 74.1240,
+                location_name: 'Goa (Social Media)', status: 'verified', created_at: new Date().toISOString()
+              } as HazardReport)}
+              stroke="#22c55e" strokeWidth="3" />
+            <text x="300" y="405" textAnchor="middle" className="text-xs fill-white font-bold">📱</text>
+            <text x="318" y="390" className="text-xs fill-green-600 font-bold">✓</text>
+          </g>
+
+          {/* Official Report Hotspots */}
+          <g>
+            <circle cx="180" cy="170" r="18" className="fill-blue-500 opacity-20" />
+            <circle cx="180" cy="170" r="10" className="fill-blue-500 cursor-pointer" 
+              onClick={() => setSelectedReport({
+                id: 'or1', title: 'Official Report: Mumbai Marine Drive', description: 'Coast Guard confirms flooding at Marine Drive',
+                hazard_type: 'coastal_flooding', severity: 'high', latitude: 18.9220, longitude: 72.8347,
+                location_name: 'Mumbai Marine Drive (Official)', status: 'verified', created_at: new Date().toISOString()
+              } as HazardReport)}
+              stroke="#22c55e" strokeWidth="3" />
+            <text x="180" y="175" textAnchor="middle" className="text-xs fill-white font-bold">🏛️</text>
+            <text x="198" y="160" className="text-xs fill-green-600 font-bold">✓</text>
+          </g>
+          
+          <g>
+            <circle cx="420" cy="320" r="16" className="fill-yellow-500 opacity-20" />
+            <circle cx="420" cy="320" r="9" className="fill-yellow-500 cursor-pointer" 
+              onClick={() => setSelectedReport({
+                id: 'or2', title: 'Citizen Report: Chennai Waves', description: 'Local fishermen report unusual wave patterns',
+                hazard_type: 'rip_current', severity: 'medium', latitude: 13.0827, longitude: 80.2707,
+                location_name: 'Chennai Coast (Citizen)', status: 'pending', created_at: new Date().toISOString()
+              } as HazardReport)}
+              stroke="#eab308" strokeWidth="3" />
+            <text x="420" y="325" textAnchor="middle" className="text-xs fill-white font-bold">👤</text>
+            <text x="435" y="310" className="text-xs fill-yellow-600 font-bold">⏳</text>
+          </g>
+
           {/* Hazard markers */}
           {reports.map((report) => {
             const { x, y } = projectToSVG(report.latitude, report.longitude)
             const Icon = HAZARD_ICONS[report.hazard_type as keyof typeof HAZARD_ICONS] || MapPin
             const severityColor = SEVERITY_COLORS[report.severity as keyof typeof SEVERITY_COLORS]
+            const verification = verifications[report.id]
+            const verificationStatus = verification?.status || 'pending'
 
             return (
               <g key={report.id}>
-                {/* Pulsing circle animation */}
+                {/* Static circle background */}
                 <circle
                   cx={x}
                   cy={y}
                   r="20"
                   className={`${severityColor.replace("bg-", "fill-")} opacity-20`}
-                  style={{
-                    animation: `pulse 2s infinite ${Math.random() * 2}s`,
-                  }}
                 />
                 <circle
                   cx={x}
                   cy={y}
                   r="15"
                   className={`${severityColor.replace("bg-", "fill-")} opacity-40`}
-                  style={{
-                    animation: `pulse 2s infinite ${Math.random() * 2}s`,
-                  }}
                 />
 
                 {/* Marker */}
@@ -142,13 +217,20 @@ export function HazardMap({ reports }: HazardMapProps) {
                   cy={y}
                   r="8"
                   className={`${severityColor.replace("bg-", "fill-")} cursor-pointer hover:opacity-80`}
-                  onClick={() => setSelectedReport(report)}
+                  onClick={() => setSelectedReport({...report, status: verificationStatus})}
+                  stroke={verificationStatus === 'verified' ? '#22c55e' : verificationStatus === 'rejected' ? '#ef4444' : '#eab308'}
+                  strokeWidth="3"
                 />
 
-                {/* Icon overlay */}
-                <foreignObject x={x - 6} y={y - 6} width="12" height="12" className="pointer-events-none">
-                  <Icon className="h-3 w-3 text-white" />
-                </foreignObject>
+                {/* Consistent citizen report symbol */}
+                <text x={x} y={y+3} textAnchor="middle" className="text-xs fill-white font-bold pointer-events-none">
+                  👤
+                </text>
+                
+                {/* Verification status indicator */}
+                <text x={x+12} y={y-8} className="text-xs font-bold pointer-events-none">
+                  {verificationStatus === 'verified' ? '✓' : verificationStatus === 'rejected' ? '✗' : '⏳'}
+                </text>
               </g>
             )
           })}
@@ -180,16 +262,56 @@ export function HazardMap({ reports }: HazardMapProps) {
           </Button>
         </div>
 
-        {/* Legend */}
-        <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
-          <h3 className="font-semibold text-sm mb-3">Hazard Severity</h3>
-          <div className="space-y-2">
-            {Object.entries(SEVERITY_COLORS).map(([severity, color]) => (
-              <div key={severity} className="flex items-center gap-2">
-                <div className={`w-3 h-3 rounded-full ${color}`} />
-                <span className="text-xs capitalize">{severity}</span>
+        {/* Enhanced Legend */}
+        <div className="absolute bottom-4 left-4 bg-card/95 backdrop-blur-sm rounded-lg p-4 shadow-lg max-w-xs">
+          <h3 className="font-semibold text-sm mb-3">Map Legend</h3>
+          
+          <div className="mb-3">
+            <h4 className="text-xs font-medium mb-2 text-muted-foreground">Source Types</h4>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-sm">📱</span>
+                <span className="text-xs">Social Media</span>
               </div>
-            ))}
+              <div className="flex items-center gap-2">
+                <span className="text-sm">🏛️</span>
+                <span className="text-xs">Official Report</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm">👤</span>
+                <span className="text-xs">Citizen Report</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mb-3">
+            <h4 className="text-xs font-medium mb-2 text-muted-foreground">Verification Status</h4>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 border-2 border-green-500 rounded-full" />
+                <span className="text-xs">✓ Verified</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 border-2 border-yellow-500 rounded-full" />
+                <span className="text-xs">⏳ Pending</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 border-2 border-red-500 rounded-full" />
+                <span className="text-xs">✗ Rejected</span>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="text-xs font-medium mb-2 text-muted-foreground">Severity</h4>
+            <div className="space-y-1">
+              {Object.entries(SEVERITY_COLORS).map(([severity, color]) => (
+                <div key={severity} className="flex items-center gap-2">
+                  <div className={`w-3 h-3 rounded-full ${color}`} />
+                  <span className="text-xs capitalize">{severity}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -212,6 +334,22 @@ export function HazardMap({ reports }: HazardMapProps) {
                     >
                       {selectedReport.severity}
                     </Badge>
+                    {selectedReport.status === 'verified' && (
+                      <Badge className="bg-green-100 text-green-800 border-green-200">
+                        ✓ VERIFIED
+                      </Badge>
+                    )}
+                    {selectedReport.status === 'rejected' && (
+                      <Badge className="bg-red-100 text-red-800 border-red-200">
+                        ✗ REJECTED
+                      </Badge>
+                    )}
+                    {selectedReport.status === 'pending' && (
+                      <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                        ⏳ PENDING
+                      </Badge>
+                    )}
+
                   </div>
                 </div>
                 <Button variant="ghost" size="sm" onClick={() => setSelectedReport(null)}>
@@ -219,8 +357,8 @@ export function HazardMap({ reports }: HazardMapProps) {
                 </Button>
               </div>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-3">{selectedReport.description}</p>
+            <CardContent className="space-y-3">
+              <p className="text-sm text-muted-foreground">{selectedReport.description}</p>
               <div className="space-y-2 text-xs">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Location:</span>
@@ -234,9 +372,20 @@ export function HazardMap({ reports }: HazardMapProps) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Reported:</span>
-                  <span>{new Date(selectedReport.created_at).toLocaleDateString()}</span>
+                  <span>{new Date(selectedReport.created_at).toLocaleDateString('en-US')}</span>
                 </div>
               </div>
+              
+              <div className="pt-3 border-t">
+                <Button 
+                  size="sm" 
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={() => window.open(`/report/${selectedReport.id}`, '_blank')}
+                >
+                  View Full Report →
+                </Button>
+              </div>
+
             </CardContent>
           </Card>
         </div>

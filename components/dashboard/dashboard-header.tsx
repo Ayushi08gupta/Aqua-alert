@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
-import { Waves, Plus, User, LogOut, Settings, BarChart3 } from "lucide-react"
+import { Waves, Plus, User, LogOut, Settings, BarChart3, Users, CheckCircle } from "lucide-react"
 import Link from "next/link"
 
 interface DashboardHeaderProps {
@@ -46,17 +46,39 @@ export function DashboardHeader({ user, profile }: DashboardHeaderProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Link href="/dashboard" className="flex items-center space-x-3">
-              <div className="bg-primary/10 p-2 rounded-lg">
-                <Waves className="h-6 w-6 text-primary" />
+              <div className="bg-gradient-to-br from-blue-500 to-cyan-500 p-2 rounded-lg shadow-lg">
+                <div className="relative">
+                  <Waves className="h-6 w-6 text-white" />
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                </div>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-foreground">Ocean Hazard Platform</h1>
+                <h1 className="text-xl font-bold text-foreground flex items-center gap-2">
+                  <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Aqua-Alert</span>
+                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">🌊 LIVE</span>
+                </h1>
                 <p className="text-sm text-muted-foreground">Welcome back, {profile?.full_name || user.email}</p>
               </div>
             </Link>
           </div>
 
           <div className="flex items-center space-x-4">
+            <Button asChild variant="outline" className="bg-transparent">
+              <Link href="/community">
+                <Users className="h-4 w-4 mr-2" />
+                Community
+              </Link>
+            </Button>
+
+            {profile?.role && ['officer', 'admin', 'government', 'emergency_responder'].includes(profile.role) && (
+              <Button asChild variant="outline" className="bg-transparent border-green-200 text-green-700 hover:bg-green-50">
+                <Link href="/verification">
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Verify Reports
+                </Link>
+              </Button>
+            )}
+
             {hasAnalyticsAccess && (
               <Button asChild variant="outline" className="bg-transparent">
                 <Link href="/analytics">

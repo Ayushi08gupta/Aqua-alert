@@ -5,6 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import { useLanguage } from "@/contexts/language-context"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -39,6 +40,7 @@ const SEVERITY_LEVELS = [
 ]
 
 export function ReportForm({ userId }: ReportFormProps) {
+  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
@@ -91,6 +93,23 @@ export function ReportForm({ userId }: ReportFormProps) {
 
       if (error) throw error
 
+      // Also save to localStorage for immediate dashboard display
+      const userReport = {
+        id: Date.now().toString(),
+        title: formData.title,
+        description: formData.description,
+        hazard_type: formData.hazard_type,
+        severity: formData.severity,
+        latitude: formData.latitude,
+        longitude: formData.longitude,
+        location: formData.location_name,
+        created_at: new Date().toISOString()
+      }
+      
+      const existingReports = JSON.parse(localStorage.getItem('userHazardReports') || '[]')
+      existingReports.push(userReport)
+      localStorage.setItem('userHazardReports', JSON.stringify(existingReports))
+
       router.push("/dashboard?success=report-submitted")
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "Failed to submit report")
@@ -112,7 +131,7 @@ export function ReportForm({ userId }: ReportFormProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <AlertTriangle className="h-5 w-5 text-accent" />
-          Hazard Report Details
+          {t('report.title')}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -121,11 +140,11 @@ export function ReportForm({ userId }: ReportFormProps) {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="title" className="text-sm font-medium">
-                Report Title *
+                {t('report.title')} *
               </Label>
               <Input
                 id="title"
-                placeholder="Brief description of the hazard"
+                placeholder={t('report.title')}
                 value={formData.title}
                 onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
                 className="h-11"
@@ -136,14 +155,14 @@ export function ReportForm({ userId }: ReportFormProps) {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="hazard_type" className="text-sm font-medium">
-                  Hazard Type *
+                  {t('report.type')} *
                 </Label>
                 <Select
                   value={formData.hazard_type}
                   onValueChange={(value) => setFormData((prev) => ({ ...prev, hazard_type: value }))}
                 >
                   <SelectTrigger className="h-11">
-                    <SelectValue placeholder="Select hazard type" />
+                    <SelectValue placeholder={t('report.type')} />
                   </SelectTrigger>
                   <SelectContent>
                     {HAZARD_TYPES.map((type) => (
@@ -179,11 +198,11 @@ export function ReportForm({ userId }: ReportFormProps) {
 
             <div className="space-y-2">
               <Label htmlFor="description" className="text-sm font-medium">
-                Detailed Description *
+                {t('report.description')} *
               </Label>
               <Textarea
                 id="description"
-                placeholder="Provide detailed information about what you observed, when it occurred, and any immediate impacts..."
+                placeholder={t('report.description')}
                 value={formData.description}
                 onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
                 className="min-h-[120px] resize-none"
@@ -196,7 +215,7 @@ export function ReportForm({ userId }: ReportFormProps) {
           <div className="space-y-2">
             <Label className="text-sm font-medium flex items-center gap-2">
               <MapPin className="h-4 w-4" />
-              Location *
+              {t('report.location')} *
             </Label>
             <LocationPicker onLocationSelect={handleLocationSelect} />
             {formData.location_name && (
@@ -223,7 +242,7 @@ export function ReportForm({ userId }: ReportFormProps) {
           {/* Submit Button */}
           <div className="flex gap-4 pt-4">
             <Button type="button" variant="outline" className="flex-1 bg-transparent" onClick={() => router.back()}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               type="submit"
@@ -231,11 +250,11 @@ export function ReportForm({ userId }: ReportFormProps) {
               disabled={!isFormValid || isSubmitting}
             >
               {isSubmitting ? (
-                "Submitting..."
+                t('common.loading')
               ) : (
                 <>
                   <Send className="h-4 w-4 mr-2" />
-                  Submit Report
+                  {t('report.submit')}
                 </>
               )}
             </Button>

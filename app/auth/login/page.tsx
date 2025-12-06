@@ -57,7 +57,12 @@ export default function LoginPage() {
               <Waves className="h-8 w-8 text-primary" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Ocean Hazard Platform</h1>
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <div className="bg-gradient-to-br from-blue-500 to-cyan-500 p-2 rounded-lg shadow-lg">
+              <Waves className="h-6 w-6 text-white" />
+            </div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Aqua-Alert</h1>
+          </div>
           <p className="text-muted-foreground">Protecting our coastal communities</p>
         </div>
 
@@ -67,6 +72,26 @@ export default function LoginPage() {
             <CardDescription>Sign in to access the hazard reporting platform</CardDescription>
           </CardHeader>
           <CardContent>
+            <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800 font-medium">Demo Access:</p>
+              <Button 
+                type="button" 
+                variant="outline" 
+                size="sm" 
+                className="mt-2 w-full"
+                onClick={() => {
+                  // Bypass login for demo
+                  localStorage.setItem('demo-user', JSON.stringify({
+                    id: 'demo-user-123',
+                    email: 'demo@aqua-alert.com',
+                    role: 'emergency_responder'
+                  }));
+                  window.location.href = '/dashboard';
+                }}
+              >
+                Continue as Emergency Responder (Demo)
+              </Button>
+            </div>
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium">
