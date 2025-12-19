@@ -1,20 +1,48 @@
+import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
 export async function updateSession(request: NextRequest) {
-  // Skip middleware for static files and API routes
-  if (
-    request.nextUrl.pathname.startsWith('/_next') ||
-    request.nextUrl.pathname.startsWith('/api') ||
-    request.nextUrl.pathname.includes('.')
-  ) {
-    return NextResponse.next()
-  }
+  let supabaseResponse = NextResponse.next({
+    request,
+  })
 
-  // Allow access to auth pages and home page without authentication
-  const publicPaths = ['/', '/auth/login', '/auth/signup', '/auth/verify-email']
-  if (publicPaths.includes(request.nextUrl.pathname)) {
-    return NextResponse.next()
-  }
+  try {
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll()
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+            supabaseResponse = NextResponse.next({
+              request,
+            })
+            cookiesToSet.forEach(({ name, value, options }) => supabaseResponse.cookies.set(name, value, options))
+          },
+        },
+      },
+    )
 
-  return NextResponse.next()
+    // Skip auth check for public paths
+    const publicPaths = ['/', '/auth/login', '/auth/signup', '/auth/verify-email']
+    if (publicPaths.includes(request.nextUrl.pathname)) {
+      return supabaseResponse
+    }
+
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user && !request.nextUrl.pathname.startsWith('/auth')) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/auth/login'
+      return NextResponse.redirect(url)
+    }
+
+    return supabaseResponse
+  } catch (error) {
+    console.error('Middleware error:', error)
+    return supabaseResponse
+  }
 }
