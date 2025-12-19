@@ -1,0 +1,34 @@
+{
+  "source": "INCOIS_SIMULATION",
+  "generated_at": "2025-12-19T06:30:00Z",
+  "region": {
+    "coast": "East Coast",
+    "state": "Odisha",
+    "location": "Puri",
+    "latitude": 19.8135,
+    "longitude": 85.8312
+  },
+  "ocean_parameters": {
+    "wave_height_m": 3.6,
+    "swell_height_m": 4.2,
+    "sea_surface_temperature_c": 28.9,
+    "sea_level_anomaly_m": 0.82,
+    "current_speed_mps": 1.4,
+    "current_direction_deg": 135
+  },
+  "atmospheric_parameters": {
+    "wind_speed_kmph": 48,
+    "wind_direction_deg": 120,
+    "air_pressure_hpa": 996,
+    "rainfall_mm": 68
+  },
+  "tide_information": {
+    "tide_phase": "High Tide",
+    "tide_height_m": 2.1
+  },
+  "risk_flags": {
+    "high_wave_warning": true,
+    "storm_surge_risk": true,
+    "coastal_flooding_risk": true
+  }
+}

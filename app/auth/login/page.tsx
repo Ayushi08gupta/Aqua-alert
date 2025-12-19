@@ -72,26 +72,7 @@ export default function LoginPage() {
             <CardDescription>Sign in to access the hazard reporting platform</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-              <p className="text-sm text-blue-800 font-medium">Demo Access:</p>
-              <Button 
-                type="button" 
-                variant="outline" 
-                size="sm" 
-                className="mt-2 w-full"
-                onClick={() => {
-                  // Bypass login for demo
-                  localStorage.setItem('demo-user', JSON.stringify({
-                    id: 'demo-user-123',
-                    email: 'demo@aqua-alert.com',
-                    role: 'emergency_responder'
-                  }));
-                  window.location.href = '/dashboard';
-                }}
-              >
-                Continue as Emergency Responder (Demo)
-              </Button>
-            </div>
+
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium">

@@ -1,12 +1,23 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/contexts/language-context';
+import { useRealtimeData } from '@/hooks/use-realtime-data';
 import { DashboardHeader } from '@/components/dashboard/dashboard-header';
 import { HazardMap } from '@/components/dashboard/hazard-map';
 import { HazardStats } from '@/components/dashboard/hazard-stats';
 import { ResearcherControls } from '@/components/dashboard/researcher-controls';
 import { OfficerVerification } from '@/components/dashboard/officer-verification';
 import { AlertSystem } from '@/components/alerts/alert-system';
+
+import { RealtimePanel } from '@/components/dashboard/realtime-panel';
+import { CitizenPanel } from '@/components/dashboard/citizen-panel';
+import { GovernmentPanel } from '@/components/dashboard/government-panel';
+import { ReportVerification } from '@/components/dashboard/report-verification';
+import { ResearcherPanel } from '@/components/dashboard/researcher-panel';
+import { EmergencyPanel } from '@/components/dashboard/emergency-panel';
+
 
 interface DashboardClientProps {
   user: any;
@@ -16,12 +27,34 @@ interface DashboardClientProps {
 
 export function DashboardClient({ user, profile, reports }: DashboardClientProps) {
   const { t } = useLanguage();
+  const [currentProfile, setCurrentProfile] = useState(profile);
+  const realtimeData = useRealtimeData();
+
+  // Check localStorage for role
+  useEffect(() => {
+    const storedProfile = localStorage.getItem('user-profile');
+    if (storedProfile) {
+      const parsed = JSON.parse(storedProfile);
+      setCurrentProfile(parsed);
+    }
+  }, []);
+
+  const handleRoleFixed = (role: string) => {
+    setCurrentProfile({
+      ...currentProfile,
+      role: role,
+      full_name: 'Government Official',
+      organization: 'Government Department'
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50">
       <DashboardHeader user={user} profile={profile} />
 
       <main className="container mx-auto px-6 py-8">
+
+        
         <div className="grid lg:grid-cols-4 gap-6">
           {/* Map Section */}
           <div className="lg:col-span-3">
@@ -36,23 +69,37 @@ export function DashboardClient({ user, profile, reports }: DashboardClientProps
             </div>
           </div>
 
-          {/* Stats Sidebar */}
-          <div className="lg:col-span-1">
-            <HazardStats reports={reports || []} />
+          {/* Role-specific Sidebar */}
+          <div className="lg:col-span-1 space-y-6">
+            <RealtimePanel data={realtimeData} />
+            
+            {/* Role-specific panels */}
+            {currentProfile?.role === 'citizen' && <CitizenPanel realtimeData={realtimeData} />}
+            {currentProfile?.role === 'government' && <GovernmentPanel realtimeData={realtimeData} />}
+            {currentProfile?.role === 'researcher' && <ResearcherPanel realtimeData={realtimeData} />}
+            {currentProfile?.role === 'emergency_responder' && <EmergencyPanel realtimeData={realtimeData} />}
+            
+            {/* Default to citizen panel if no role */}
+            {!currentProfile?.role && <CitizenPanel realtimeData={realtimeData} />}
           </div>
         </div>
 
-        {/* Officer Verification Panel - Debug: Always show */}
-        <div className="mt-6">
-          <div className="mb-4 p-4 bg-yellow-100 rounded-lg">
-            <p className="text-sm">Debug Info - User Role: <strong>{profile?.role || 'No role'}</strong></p>
-            <p className="text-sm">User ID: {user?.id}</p>
+        {/* Report Verification Panel - Government Officials */}
+        {(currentProfile?.role === 'government' || currentProfile?.role === 'emergency_responder') && (
+          <div className="mt-6">
+            <ReportVerification userRole={currentProfile.role} />
           </div>
-          <OfficerVerification userRole={profile?.role || 'citizen'} reports={reports} />
-        </div>
+        )}
+
+        {/* Officer Verification Panel */}
+        {currentProfile?.role && (
+          <div className="mt-6">
+            <OfficerVerification userRole={currentProfile.role} reports={reports} />
+          </div>
+        )}
 
         {/* Researcher Controls - Only visible for researchers/analysts */}
-        {profile && ['researcher', 'analyst', 'admin'].includes(profile.role) && (
+        {currentProfile && ['researcher', 'analyst', 'admin'].includes(currentProfile.role) && (
           <div className="mt-6">
             <ResearcherControls
               reports={reports || []}

@@ -7,6 +7,7 @@ interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  translateDynamic: (text: string) => Promise<string>;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -28,8 +29,23 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const t = (key: string) => getTranslation(language, key);
 
+  const translateDynamic = async (text: string) => {
+    if (language === 'en') return text;
+    try {
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, targetLanguage: language })
+      });
+      const data = await response.json();
+      return data.translatedText || text;
+    } catch {
+      return text;
+    }
+  };
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, translateDynamic }}>
       {children}
     </LanguageContext.Provider>
   );

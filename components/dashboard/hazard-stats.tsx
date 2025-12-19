@@ -17,9 +17,10 @@ interface HazardReport {
 
 interface HazardStatsProps {
   reports: HazardReport[]
+  realtimeData?: any
 }
 
-export function HazardStats({ reports }: HazardStatsProps) {
+export function HazardStats({ reports, realtimeData }: HazardStatsProps) {
   const { t } = useLanguage();
   const [verifications, setVerifications] = useState<Record<string, any>>({})
   
@@ -34,11 +35,11 @@ export function HazardStats({ reports }: HazardStatsProps) {
     return () => clearInterval(interval)
   }, [])
   
-  // Calculate statistics with verification status
-  const totalReports = reports.length
-  const verifiedCount = Object.values(verifications).filter(v => v.status === 'verified').length
-  const pendingCount = reports.length - Object.keys(verifications).length
-  const criticalReports = reports.filter((r) => r.severity === "critical").length
+  // Use real-time data if available, otherwise fall back to reports
+  const totalReports = realtimeData?.crowd?.total_reports_last_hour || reports.length
+  const verifiedCount = realtimeData?.crowd?.verified_reports || Object.values(verifications).filter(v => v.status === 'verified').length
+  const pendingCount = totalReports - verifiedCount
+  const criticalReports = realtimeData?.crowd?.critical_reports || reports.filter((r) => r.severity === "critical").length
 
   // Hazard type distribution
   const hazardTypes = reports.reduce(

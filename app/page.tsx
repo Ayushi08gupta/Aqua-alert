@@ -11,9 +11,14 @@ export default function HomePage() {
   const { t } = useLanguage();
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50 relative">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
+        style={{ backgroundImage: 'url(/ocean-background.png)' }}
+      />
       {/* Header */}
-      <header className="border-b border-border/40 bg-card/80 backdrop-blur-sm">
+      <header className="border-b border-border/40 bg-card/80 backdrop-blur-sm relative z-10">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -42,7 +47,7 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 px-6">
+      <section className="py-20 px-6 relative z-10">
         <div className="container mx-auto text-center">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center justify-center gap-4 mb-6">

@@ -1,0 +1,15 @@
+{
+  "past_6_hours": [
+    { "time": "00:00", "wave_height": 2.1, "wind_speed": 22 },
+    { "time": "01:00", "wave_height": 2.4, "wind_speed": 26 },
+    { "time": "02:00", "wave_height": 2.9, "wind_speed": 31 },
+    { "time": "03:00", "wave_height": 3.3, "wind_speed": 38 },
+    { "time": "04:00", "wave_height": 3.6, "wind_speed": 45 },
+    { "time": "05:00", "wave_height": 3.9, "wind_speed": 52 }
+  ],
+  "trend_analysis": {
+    "wave_trend": "Increasing",
+    "wind_trend": "Rapid Increase",
+    "risk_level": "Escalating"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "predicted_severity": "Critical",
+  "risk_score": 82.6,
+  "confidence": 0.87,
+  "contributing_factors": [
+    "Rapid increase in wave height",
+    "High number of verified citizen reports",
+    "Strong panic sentiment on social media",
+    "High tide combined with storm surge risk"
+  ],
+  "recommended_action": "Immediate coastal evacuation and marine activity suspension"
+}

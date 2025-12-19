@@ -1,0 +1,11 @@
+{
+  "total_reports_last_hour": 74,
+  "verified_reports": 18,
+  "critical_reports": 29,
+  "geo_density_reports_per_km2": 12.4,
+  "dominant_hazards": [
+    "High Waves",
+    "Coastal Flooding",
+    "Strong Currents"
+  ]
+}

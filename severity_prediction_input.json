@@ -1,0 +1,19 @@
+{
+  "crowd": {
+    "reportCount": 74,
+    "criticalRatio": 0.39,
+    "verifiedCount": 18,
+    "geoDensity": 12.4
+  },
+  "weather": {
+    "waveHeight": 3.6,
+    "windSpeed": 48,
+    "seaLevelAnomaly": 0.82,
+    "tidePhase": "High"
+  },
+  "social": {
+    "postVolume": 520,
+    "keywordSpike": 61,
+    "sentiment": -0.72
+  }
+}

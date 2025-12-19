@@ -1,0 +1,15 @@
+{
+  "platforms": ["Twitter", "YouTube"],
+  "total_posts_last_hour": 520,
+  "keyword_spike_percentage": 61,
+  "top_keywords": [
+    "high waves",
+    "sea flooding",
+    "danger near coast",
+    "boats damaged"
+  ],
+  "average_sentiment_score": -0.72,
+  "panic_index": 0.81,
+  "viral_posts_detected": true
+}
+

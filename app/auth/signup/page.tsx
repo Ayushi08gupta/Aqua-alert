@@ -56,7 +56,7 @@ export default function SignUpPage() {
       
       // Manually create profile to ensure role is saved
       if (authData.user) {
-        const { error: profileError } = await supabase.from('profiles').insert({
+        const { error: profileError } = await supabase.from('profiles').upsert({
           id: authData.user.id,
           full_name: fullName,
           organization: organization || null,
