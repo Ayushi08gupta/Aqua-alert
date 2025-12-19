@@ -12,7 +12,13 @@ import { Users, MapPin, Calendar, CheckCircle, Search, Filter, Award, MessageCir
 import { communityMembers, communityStats } from '@/lib/community-data';
 import { HazardPredictions } from './hazard-predictions';
 
-export function CommunityClient() {
+interface CommunityClientProps {
+  user: any;
+  profile: any;
+  profiles: any[];
+}
+
+export function CommunityClient({ user, profile, profiles }: CommunityClientProps) {
   const { t } = useLanguage();
   const [filteredMembers, setFilteredMembers] = useState(communityMembers);
   const [searchTerm, setSearchTerm] = useState('');

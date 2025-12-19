@@ -299,9 +299,406 @@ export const translations = {
     'common.terms': 'नियम',
     'common.logout': 'लॉगआउट',
     'common.profile': 'प्रोफाइल'
+  },
+  
+  // Bengali
+  bn: {
+    'header.title': 'অ্যাকোয়া-অ্যালার্ট',
+    'header.signin': 'সাইন ইন',
+    'hero.title': 'অ্যাকোয়া-অ্যালার্ট প্ল্যাটফর্ম',
+    'report.title': 'সমুদ্র বিপদ রিপোর্ট করুন',
+    'report.type': 'বিপদের ধরন',
+    'report.location': 'অবস্থান',
+    'report.description': 'বিবরণ',
+    'report.submit': 'রিপোর্ট জমা দিন',
+    'common.loading': 'লোড হচ্ছে...',
+    'common.cancel': 'বাতিল',
+    'hazard.tsunami': 'সুনামি',
+    'hazard.hurricane': 'ঘূর্ণিঝড়',
+    'hazard.oil_spill': 'তেল ছড়িয়ে পড়া',
+    'severity.low': 'কম - সামান্য উদ্বেগ',
+    'severity.critical': 'সংকটজনক - তাৎক্ষণিক হুমকি'
+  },
+  
+  // Tamil
+  ta: {
+    'header.title': 'அக்வா-அலர்ட்',
+    'header.signin': 'உள்நுழைய',
+    'hero.title': 'அக்வா-அலர்ட் தளம்',
+    'report.title': 'கடல் ஆபத் அறிக்கை',
+    'report.type': 'ஆபத் வகை',
+    'report.location': 'இடம்',
+    'report.description': 'விளக்கம்',
+    'report.submit': 'அறிக்கை சமர்ப்பிக்க',
+    'common.loading': 'ஏற்றுகிறது...',
+    'common.cancel': 'ரத்து செய்',
+    'hazard.tsunami': 'சுனாமி',
+    'hazard.hurricane': 'புயல்',
+    'hazard.oil_spill': 'எண்ணெய் கசிவு',
+    'severity.low': 'குறைவு - சிறிய கவலை',
+    'severity.critical': 'முக்கியமான - உடனடி அச்சுறுத்தல்'
+  },
+  
+  // Telugu
+  te: {
+    'header.title': 'అక్వా-అలర్ట్',
+    'header.signin': 'సైన్ ఇన్',
+    'hero.title': 'అక్వా-అలర్ట్ ప్లాట్‌ఫార్మ్',
+    'report.title': 'సముద్ర ప్రమాద నివేదిక',
+    'report.type': 'ప్రమాద రకం',
+    'report.location': 'స్థానం',
+    'report.description': 'వివరణ',
+    'report.submit': 'నివేదిక సమర్పించండి',
+    'common.loading': 'లోడ్ అవుతోంది...',
+    'common.cancel': 'రద్దు చేయండి',
+    'hazard.tsunami': 'సునామీ',
+    'hazard.hurricane': 'తుఫాను',
+    'hazard.oil_spill': 'చమురు చిందటం',
+    'severity.low': 'తక్కువ - చిన్న ఆందోళన',
+    'severity.critical': 'క్లిష్టమైన - తక్షణ ముప్పు'
+  },
+  
+  // Gujarati
+  gu: {
+    'header.title': 'એક્વા-અલર્ટ',
+    'header.signin': 'સાઇન ઇન',
+    'hero.title': 'એક્વા-અલર્ટ પ્લેટફોર્મ',
+    'report.title': 'સમુદ્રી ખતરાની રિપોર્ટ',
+    'report.type': 'ખતરાનો પ્રકાર',
+    'report.location': 'સ્થાન',
+    'report.description': 'વર્ણન',
+    'report.submit': 'રિપોર્ટ જમા કરો',
+    'common.loading': 'લોડ થઈ રહ્યું છે...',
+    'common.cancel': 'રદ્દ કરો',
+    'hazard.tsunami': 'સુનામી',
+    'hazard.hurricane': 'વાવાઝોડા',
+    'hazard.oil_spill': 'તેલનું વહેણ',
+    'severity.low': 'ઓછું - આમ ચિંતા',
+    'severity.critical': 'ગંભીર - તાત્કાલિક ખતરો'
+  },
+  
+  // Kannada
+  kn: {
+    'header.title': 'ಅಕ್ವಾ-ಅಲರ್ಟ್',
+    'header.signin': 'ಸೈನ್ ಇನ್',
+    'hero.title': 'ಅಕ್ವಾ-ಅಲರ್ಟ್ ಪ್ಲ್ಯಾಟ್‌ಫಾರ್ಮ್',
+    'report.title': 'ಸಮುದ್ರ ಆಪಾಯ ರಿಪೋರ್ಟ್',
+    'report.type': 'ಆಪಾಯದ ಪ್ರಕಾರ',
+    'report.location': 'ಸ್ಥಳ',
+    'report.description': 'ವಿವರಣೆ',
+    'report.submit': 'ರಿಪೋರ್ಟ್ ಸಲ್ಲಿಸಿ',
+    'common.loading': 'ಲೋಡ್ ಆಗುತ್ತಿದೆ...',
+    'common.cancel': 'ರದ್ದು ಮಾಡಿ',
+    'hazard.tsunami': 'ಸುನಾಮಿ',
+    'hazard.hurricane': 'ಚಕ್ರವಾತ',
+    'hazard.oil_spill': 'ಎಣ್ಣೆ ಸಿಂತನೆ',
+    'severity.low': 'ಕಮ್ಮಿ - ಕಿಚ್ಚಿನ ಚಿಂತೆ',
+    'severity.critical': 'ಗಂಭೀರ - ತತ್ಕಾಲ ಆಪಾಯ'
+  },
+  
+  // Malayalam
+  ml: {
+    'header.title': 'അക്വ-അലർട്ട്',
+    'header.signin': 'സൈൻ ഇൻ',
+    'hero.title': 'അക്വ-അലർട്ട് പ്ലാറ്റ്‌ഫോം',
+    'report.title': 'സമുദ്ര ആപത്ത് റിപ്പോർട്ട്',
+    'report.type': 'ആപത്തിന്റെ തരം',
+    'report.location': 'സ്ഥലം',
+    'report.description': 'വിവരണം',
+    'report.submit': 'റിപ്പോർട്ട് സമർപ്പിക്കുക',
+    'common.loading': 'ലോഡ് ചെയ്യുന്നു...',
+    'common.cancel': 'റദ്ദാക്കുക',
+    'hazard.tsunami': 'സുനാമി',
+    'hazard.hurricane': 'ചക്രവാതം',
+    'hazard.oil_spill': 'എണ്ണ ചോർച്ച',
+    'severity.low': 'താഴ്ന്ന - ചെറിയ ചിന്ത',
+    'severity.critical': 'ഗുരുതര - തത്കാലീന ആപത്ത്'
+  },
+  
+  // Marathi
+  mr: {
+    'header.title': 'अक्वा-अलर्ट',
+    'header.signin': 'साइन इन',
+    'hero.title': 'अक्वा-अलर्ट प्लॅटफॉर्म',
+    'report.title': 'समुद्री धोका रिपोर्ट',
+    'report.type': 'धोक्याचा प्रकार',
+    'report.location': 'स्थान',
+    'report.description': 'वर्णन',
+    'report.submit': 'रिपोर्ट सबमिट करा',
+    'common.loading': 'लोड होत आहे...',
+    'common.cancel': 'रद्द करा',
+    'hazard.tsunami': 'सुनामी',
+    'hazard.hurricane': 'चक्रीवादळ',
+    'hazard.oil_spill': 'तेल गळती',
+    'severity.low': 'कमी - किरकोळ चिंता',
+    'severity.critical': 'गंभीर - तात्काळ धोका'
+  },
+  
+  // Punjabi
+  pa: {
+    'header.title': 'ਅਕਵਾ-ਅਲਰਟ',
+    'header.signin': 'ਸਾਈਨ ਇਨ',
+    'hero.title': 'ਅਕਵਾ-ਅਲਰਟ ਪਲੇਟਫਾਰਮ',
+    'report.title': 'ਸਮੁੰਦਰੀ ਖਤਰਾ ਰਿਪੋਰਟ',
+    'report.type': 'ਖਤਰੇ ਦੀ ਕਿਸਮ',
+    'report.location': 'ਸਥਾਨ',
+    'report.description': 'ਵਰਣਨ',
+    'report.submit': 'ਰਿਪੋਰਟ ਜਮਾਂ ਕਰੋ',
+    'common.loading': 'ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ...',
+    'common.cancel': 'ਰੱਦ ਕਰੋ',
+    'hazard.tsunami': 'ਸੁਨਾਮੀ',
+    'hazard.hurricane': 'ਤੂਫਾਨ',
+    'hazard.oil_spill': 'ਤੇਲ ਦਾ ਵਗਣਾ',
+    'severity.low': 'ਘੱਟ - ਮਾਮੂਲੀ ਚਿੰਤਾ',
+    'severity.critical': 'ਗੰਭੀਰ - ਤੁਰੰਤ ਖਤਰਾ'
+  },
+  
+  // Urdu
+  ur: {
+    'header.title': 'ایکوا-الرٹ',
+    'header.signin': 'سائن ان',
+    'hero.title': 'ایکوا-الرٹ پلیٹ فارم',
+    'report.title': 'سمندری خطرہ کی رپورٹ',
+    'report.type': 'خطرہ کی قسم',
+    'report.location': 'مقام',
+    'report.description': 'تفصیل',
+    'report.submit': 'رپورٹ جمع کریں',
+    'common.loading': 'لوڈ ہو رہا ہے...',
+    'common.cancel': 'منسوخ',
+    'hazard.tsunami': 'سونامی',
+    'hazard.hurricane': 'طوفان',
+    'hazard.oil_spill': 'تیل کا رساؤ',
+    'severity.low': 'کم - معمولی تشویش',
+    'severity.critical': 'نازک - فوری خطرہ'
+  },
+  
+  // Assamese
+  as: {
+    'header.title': 'একোৱা-এলাৰ্ট',
+    'header.signin': 'ছাইন ইন',
+    'hero.title': 'একোৱা-এলাৰ্ট প্লেটফৰ্ম',
+    'report.title': 'সাগৰীয় বিপদৰ ৰিপৰ্ট',
+    'report.type': 'বিপদৰ প্ৰকাৰ',
+    'report.location': 'স্থান',
+    'report.description': 'বৰ্ণনা',
+    'report.submit': 'ৰিপৰ্ট জমা দিয়ক',
+    'common.loading': 'লোড হৈ আছে...',
+    'common.cancel': 'ৰদ্দ কৰক',
+    'hazard.tsunami': 'সুনামি',
+    'hazard.hurricane': 'তুফান',
+    'hazard.oil_spill': 'তেলৰ সিঁচন',
+    'severity.low': 'কম - সাধাৰণ চিন্তা',
+    'severity.critical': 'গুৰুতৰ - তৎক্ষণাৎ বিপদ'
+  },
+  
+  // Odia
+  or: {
+    'header.title': 'ଅକ୍ୱା-ଅଲର୍ଟ',
+    'header.signin': 'ସାଇନ ଇନ',
+    'hero.title': 'ଅକ୍ୱା-ଅଲର୍ଟ ପ୍ଲ୍ୟାଟଫର୍ମ',
+    'report.title': 'ସାଗର ଖତରାର ରିପୋର୍ଟ',
+    'report.type': 'ଖତରାର ପ୍ରକାର',
+    'report.location': 'ସ୍ଥାନ',
+    'report.description': 'ବର୍ଣନା',
+    'report.submit': 'ରିପୋର୍ଟ ଜମା କରନ୍ତୁ',
+    'common.loading': 'ଲୋଡ ହୁଅଛି...',
+    'common.cancel': 'ରଦ୍ଦ କରନ୍ତୁ',
+    'hazard.tsunami': 'ସୁନାମି',
+    'hazard.hurricane': 'ତୁଫାନ',
+    'hazard.oil_spill': 'ତେଲ ଛିଟିବା',
+    'severity.low': 'କମ୍ - ସାଧାରଣ ଚିନ୍ତା',
+    'severity.critical': 'ଗୁରୁତର - ତତ୍କାଳୀନ ଖତରା'
+  },
+  
+  // Kashmiri
+  ks: {
+    'header.title': 'اکوا-الرٹ',
+    'header.signin': 'سائن اِن',
+    'hero.title': 'اکوا-الرٹ پلیٹ فارم',
+    'report.title': 'سمُندُر خطرہ رپورٹ',
+    'report.type': 'خطرُک قِسم',
+    'report.location': 'جاے',
+    'report.description': 'تفصیل',
+    'report.submit': 'رپورٹ جمع کرو',
+    'common.loading': 'لوڈ گومُت...',
+    'common.cancel': 'رَد کرو',
+    'hazard.tsunami': 'سونامی',
+    'hazard.hurricane': 'توفان',
+    'hazard.oil_spill': 'تیل رِساو',
+    'severity.low': 'کَم - معمولی فِکر',
+    'severity.critical': 'نازُک - فوری خطرہ'
+  },
+  
+  // Konkani
+  gom: {
+    'header.title': 'अक्वा-अलर्ट',
+    'header.signin': 'सायन इन',
+    'hero.title': 'अक्वा-अलर्ट प्लॅटफॉर्म',
+    'report.title': 'समुद्री धोक्याचो रिपोर्ट',
+    'report.type': 'धोक्याचो प्रकार',
+    'report.location': 'सुवात',
+    'report.description': 'वर्णन',
+    'report.submit': 'रिपोर्ट दिया',
+    'common.loading': 'लोड जाता...',
+    'common.cancel': 'रद्द करा',
+    'hazard.tsunami': 'सुनामी',
+    'hazard.hurricane': 'वादळ',
+    'hazard.oil_spill': 'तेल गळती',
+    'severity.low': 'उणें - लहान चिंता',
+    'severity.critical': 'गंभीर - तात्काळ धोको'
+  },
+  
+  // Manipuri
+  mni: {
+    'header.title': 'একোৱা-এলাৰ্ট',
+    'header.signin': 'সাইন ইন',
+    'hero.title': 'একোৱা-এলাৰ্ট প্লেটফৰ্ম',
+    'report.title': 'সমুদ্রগী খুদোংচাবা রিপোর্ট',
+    'report.type': 'খুদোংচাবাগী মতম',
+    'report.location': 'মফম',
+    'report.description': 'বিবরণ',
+    'report.submit': 'রিপোর্ট থাদোকউ',
+    'common.loading': 'লোড তৌরি...',
+    'common.cancel': 'রেদ তৌ',
+    'hazard.tsunami': 'সুনামি',
+    'hazard.hurricane': 'নুংথিল',
+    'hazard.oil_spill': 'তেল থোকপা',
+    'severity.low': 'অতোম্বা - অপিকপা লোইশিনবা',
+    'severity.critical': 'যাম্না অকাযবা - খুদক্তা খুদোংচাবা'
+  },
+  
+  // Nepali
+  ne: {
+    'header.title': 'एक्वा-अलर्ट',
+    'header.signin': 'साइन इन',
+    'hero.title': 'एक्वा-अलर्ट प्ल्याटफर्म',
+    'report.title': 'समुद्री जोखिम रिपोर्ट',
+    'report.type': 'जोखिमको प्रकार',
+    'report.location': 'स्थान',
+    'report.description': 'विवरण',
+    'report.submit': 'रिपोर्ट पेश गर्नुहोस्',
+    'common.loading': 'लोड हुँदै...',
+    'common.cancel': 'रद्द गर्नुहोस्',
+    'hazard.tsunami': 'सुनामी',
+    'hazard.hurricane': 'आँधी',
+    'hazard.oil_spill': 'तेल चुहिने',
+    'severity.low': 'कम - सामान्य चिन्ता',
+    'severity.critical': 'गम्भीर - तत्काल जोखिम'
+  },
+  
+  // Santali
+  sat: {
+    'header.title': 'ᱟᱠᱣᱟ-ᱟᱞᱟᱨᱴ',
+    'header.signin': 'ᱥᱟᱭᱱ ᱤᱱ',
+    'hero.title': 'ᱟᱠᱣᱟ-ᱟᱞᱟᱨᱴ ᱯᱞᱮᱴᱯᱷᱟᱨᱢ',
+    'report.title': 'ᱥᱟᱢᱩᱫᱽᱨᱤ ᱠᱷᱟᱛᱟᱨ ᱨᱤᱯᱚᱨᱴ',
+    'report.type': 'ᱠᱷᱟᱛᱟᱨᱟᱜ ᱞᱮᱠᱟ',
+    'report.location': 'ᱡᱟᱭᱜᱟ',
+    'report.description': 'ᱵᱤᱵᱨᱚᱬ',
+    'report.submit': 'ᱨᱤᱯᱚᱨᱴ ᱡᱚᱢᱟ',
+    'common.loading': 'ᱞᱚᱰ ᱦᱚᱱᱚᱜ...',
+    'common.cancel': 'ᱨᱟᱫᱽᱫᱚ',
+    'hazard.tsunami': 'ᱥᱩᱱᱟᱢᱤ',
+    'hazard.hurricane': 'ᱟᱟᱱᱫᱷᱤ',
+    'hazard.oil_spill': 'ᱛᱮᱞ ᱪᱷᱤᱛᱟᱱ',
+    'severity.low': 'ᱟᱞᱜᱟ - ᱥᱟᱢᱟᱱᱟ ᱪᱤᱱᱛᱟ',
+    'severity.critical': 'ᱪᱷᱤᱢᱟᱱ - ᱛᱤᱱᱟᱜ ᱠᱷᱟᱛᱟᱨ'
+  },
+  
+  // Sindhi
+  sd: {
+    'header.title': 'اَکوا-اَلرٽ',
+    'header.signin': 'سائِن اِن',
+    'hero.title': 'اَکوا-اَلرٽ پلَٽ فارم',
+    'report.title': 'سمُندري خطري جو رپورٽ',
+    'report.type': 'خطري جو قِسم',
+    'report.location': 'جاي',
+    'report.description': 'تفصيل',
+    'report.submit': 'رپورٽ جمع ڪريو',
+    'common.loading': 'لوڊ ٿي رهيو آهي...',
+    'common.cancel': 'رد ڪريو',
+    'hazard.tsunami': 'سونامي',
+    'hazard.hurricane': 'طوفان',
+    'hazard.oil_spill': 'تيل جو رساو',
+    'severity.low': 'گهَٽ - عام فِڪر',
+    'severity.critical': 'نازُڪ - فوري خطرو'
+  },
+  
+  // Tibetan
+  bo: {
+    'header.title': 'ཆུ་སྐྱོན་',
+    'header.signin': 'བསྐྱོན་བཅུག་',
+    'hero.title': 'ཆུ་སྐྱོན་བསྐྱོན་ཁྲི་བས་',
+    'report.title': 'རྒྱ་མཚོ་ཉེན་ཁྲི་བསྐྱོན་',
+    'report.type': 'ཉེན་ཁྲི་རིགས་',
+    'report.location': 'ས་གནས་',
+    'report.description': 'རྒྱས་བཤད་',
+    'report.submit': 'བསྐྱོན་བསྐྱོན་བཅུག་',
+    'common.loading': 'བསྐྱོན་བཅུག་བཞིན་བཞིན...',
+    'common.cancel': 'བསྐྱོན་བཞོག་',
+    'hazard.tsunami': 'སུ-ན་མི་',
+    'hazard.hurricane': 'རླུང་བུ་',
+    'hazard.oil_spill': 'སྣུམ་བསྐྱོན་བས་',
+    'severity.low': 'ནི་མ - བསྐྱོན་བས་ཆུག་བས་',
+    'severity.critical': 'ཉེན་ཁྲི་ཆེ་བ - སྐད་མ་ཉེན་ཁྲི'
+  },
+  
+  // Maithili
+  mai: {
+    'header.title': 'अक्वा-अलर्ट',
+    'header.signin': 'साइन इन',
+    'hero.title': 'अक्वा-अलर्ट प्लेटफार्म',
+    'report.title': 'समुद्री खतराक रिपोर्ट',
+    'report.type': 'खतराक प्रकार',
+    'report.location': 'स्थान',
+    'report.description': 'विवरण',
+    'report.submit': 'रिपोर्ट जमा करू',
+    'common.loading': 'लोड भरहल जारहल अछि...',
+    'common.cancel': 'रद्द करू',
+    'hazard.tsunami': 'सुनामी',
+    'hazard.hurricane': 'तूफान',
+    'hazard.oil_spill': 'तेलक छिटकाव',
+    'severity.low': 'कम - सामान्य चिन्ता',
+    'severity.critical': 'गंभीर - तत्काल खतरा'
+  },
+  
+  // Dogri
+  doi: {
+    'header.title': 'अक्वा-अलर्ट',
+    'header.signin': 'साइन इन',
+    'hero.title': 'अक्वा-अलर्ट प्लेटफार्म',
+    'report.title': 'समुंदरी खतरे दी रिपोर्ट',
+    'report.type': 'खतरे दी किस्म',
+    'report.location': 'जग्हा',
+    'report.description': 'वर्णन',
+    'report.submit': 'रिपोर्ट जमां करो',
+    'common.loading': 'लोड होदा पैआ...',
+    'common.cancel': 'रद्द करो',
+    'hazard.tsunami': 'सुनामी',
+    'hazard.hurricane': 'तूफान',
+    'hazard.oil_spill': 'तेल दा रिसाव',
+    'severity.low': 'घट्ट - आम चिंता',
+    'severity.critical': 'गंभीर - तुरंत खतरा'
+  },
+  
+  // Sanskrit
+  sa: {
+    'header.title': 'अक्व-अलर्ट्',
+    'header.signin': 'प्रवेशः',
+    'hero.title': 'अक्व-अलर्ट् मञ्चः',
+    'report.title': 'सागरीय आपदा विवरणम्',
+    'report.type': 'आपदायाः प्रकारः',
+    'report.location': 'स्थानम्',
+    'report.description': 'विवरणम्',
+    'report.submit': 'विवरणं समर्पयतु',
+    'common.loading': 'लोड् भवति...',
+    'common.cancel': 'रद्दः',
+    'hazard.tsunami': 'सुनामि',
+    'hazard.hurricane': 'वायुझञ्झा',
+    'hazard.oil_spill': 'तैल स्रावः',
+    'severity.low': 'न्यून - सामान्य चिन्ता',
+    'severity.critical': 'गुरुतर - तत्कालीन आपद्'
   }
-  // Note: For brevity, I'm showing only English and Hindi. 
-  // In production, all 22 languages would be fully translated
 } as const;
 
 export function getTranslation(lang: Language, key: string): string {

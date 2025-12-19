@@ -7,7 +7,22 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { CheckCircle, XCircle, Clock, MapPin, User } from 'lucide-react';
 
-const mockReports = [
+interface Report {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  reporter: string;
+  reporterRole: string;
+  severity: string;
+  timestamp: string;
+  status: string;
+  images: number;
+  verifiedBy?: string;
+  verificationNote?: string;
+}
+
+const mockReports: Report[] = [
   {
     id: '1',
     title: 'High waves at Puri Beach',
@@ -42,6 +57,7 @@ const mockReports = [
     severity: 'moderate',
     timestamp: '2024-01-15T12:20:00Z',
     status: 'verified',
+    images: 1,
     verifiedBy: 'Captain Rajesh Kumar'
   }
 ];

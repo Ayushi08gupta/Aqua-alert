@@ -122,7 +122,7 @@ export function ProfileClient({ user, profile }: ProfileClientProps) {
               <div className="flex items-center gap-4">
                 <Avatar className="h-16 w-16">
                   <AvatarFallback className="bg-primary/10 text-primary font-semibold text-lg">
-                    {formData.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
+                    {formData.full_name?.split(' ').map((n: string) => n[0]).join('').toUpperCase() || 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <div>
